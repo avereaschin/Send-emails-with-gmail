@@ -51,14 +51,14 @@ def send_gmail(_login, _password, _to, _cc='', _bcc='', _subject='', _message=''
         
         extensions = [i.lower().strip('\n') for i in blocked_ext.split(', ')]
 
+        class CustomError(Exception):
+            pass
+        
         for file in _attachments():
             if file.endswith(tuple(extensions)):
                 raise CustomError('File {0} is blocked by gmail. Can\'t attach files with this extension'.format(file))
 
-        # Check if attachment size is within gmail's 25mb limit. Throw a CustomError if above limit. 
-        class CustomError(Exception):
-            pass
-                   
+        # Check if attachment size is within gmail's 25mb limit. Throw a CustomError if above limit.                   
         _size = 0
         for file in _attachments:
             _size += os.stat(file).st_size
